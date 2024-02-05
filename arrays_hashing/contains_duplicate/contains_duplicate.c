@@ -38,19 +38,13 @@ void	ft_free_table(t_hash_table **hash)
 	}
 }
 
-bool	contains_duplicate(int *nums, int nums_size)
+void	ft_helper(t_hash_table **hash, int *nums, int nums_size, bool *flag)
 {
-	bool			flag;
-	t_hash_table	*hash[1000];
 	int				i;
 	int				index;
 	t_hash_table	*current;
 	t_hash_table	*new;
 
-	if (nums_size == 1)
-		return (false);
-	flag = false;
-	ft_set_table(hash);
 	i = -1;
 	while (++i < nums_size)
 	{
@@ -60,12 +54,12 @@ bool	contains_duplicate(int *nums, int nums_size)
 		{
 			if (current->key == nums[i])
 			{
-				flag = true;
+				*flag = true;
 				break ;
 			}
 			current = current->next;
 		}
-		if (!flag)
+		if (!*flag)
 		{
 			new = (t_hash_table *) malloc(sizeof(t_hash_table));
 			new->key = nums[i];
@@ -75,6 +69,20 @@ bool	contains_duplicate(int *nums, int nums_size)
 		else
 			break ;
 	}
+}
+
+bool	contains_duplicate(int *nums, int nums_size)
+{
+	bool			flag;
+	bool			*ptr;
+	t_hash_table	*hash[1000];
+
+	if (nums_size == 1)
+		return (false);
+	flag = false;
+	ptr = &flag;
+	ft_set_table(hash);
+	ft_helper(hash, nums, nums_size, ptr);
 	ft_free_table(hash);
 	return (flag);
 }
