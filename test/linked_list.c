@@ -90,6 +90,39 @@ struct s_node	*ft_reverse(struct s_node *head)
 	return (head);
 }
 
+void	ft_append(struct s_node **head, int data)
+{
+	struct s_node	*new;
+	struct s_node	*cur;
+
+	new = (struct s_node *) malloc(sizeof(struct s_node));
+	new->data = data;
+	new->next = NULL;
+	cur = *head;
+	while (cur->next != NULL)
+		cur = cur->next;
+	cur->next = new;
+}
+
+void	ft_rev(struct s_node **head)
+{
+	struct s_node	*prev;
+	struct s_node	*cur;
+	struct s_node	*next;
+
+	cur = *head;
+	prev = NULL;
+	next = NULL;
+	while (cur != NULL)
+	{
+		next = cur->next;
+		cur->next = prev;
+		prev = cur;
+		cur = next;
+	}
+	*head = prev;
+}
+
 int	main(void)
 {
 	struct s_node	*head;
@@ -98,11 +131,15 @@ int	main(void)
 	ft_push(&head, 2);
 	ft_push(&head, 4);
 	ft_push(&head, 6);
+	ft_append(&head, 10);
 	ft_push(&head, 8);
 	ft_insert_after_value(head, 4, 88);
 	ft_putnode(head);
 	head = ft_reverse(head);
 	printf("\nReversed:\n");
+	ft_putnode(head);
+	ft_rev(&head);
+	printf("\nReversed Again:\n");
 	ft_putnode(head);
 	ft_freelist(head);
 	return (0);
