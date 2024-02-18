@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 struct s_node
 {
-	int				data;
+	void			*data;
 	struct s_node	*next;
 };
 
-void	ft_push(struct s_node **head, int data)
+void	ft_push(struct s_node **head, void *data)
 {
 	struct s_node	*new_node;
 
@@ -19,7 +20,7 @@ void	ft_push(struct s_node **head, int data)
 	*head = new_node;
 }
 
-void	ft_insert_after(struct s_node *prev_node, int data)
+void	ft_insert_after(struct s_node *prev_node, void *data)
 {
 	struct s_node	*new_node;
 
@@ -31,7 +32,7 @@ void	ft_insert_after(struct s_node *prev_node, int data)
 	prev_node->next = new_node;
 }
 
-void	ft_insert_after_value(struct s_node *head, int target, int data)
+void	ft_insert_after_value(struct s_node *head, void *target, void *data)
 {
 	struct s_node	*current;
 
@@ -44,14 +45,14 @@ void	ft_insert_after_value(struct s_node *head, int target, int data)
 	}
 }
 
-void	ft_putnode(struct s_node *head)
+void	ft_putnode_int(struct s_node *head)
 {
 	struct s_node	*current;
 
 	current = head;
 	while (current != NULL)
 	{
-		printf("%i\n", current->data);
+		printf("%i\n", *(int *)current->data);
 		current = current->next;
 	}
 }
@@ -90,7 +91,7 @@ struct s_node	*ft_reverse(struct s_node *head)
 	return (head);
 }
 
-void	ft_append(struct s_node **head, int data)
+void	ft_append(struct s_node **head, void *data)
 {
 	struct s_node	*new;
 	struct s_node	*cur;
@@ -99,6 +100,11 @@ void	ft_append(struct s_node **head, int data)
 	new->data = data;
 	new->next = NULL;
 	cur = *head;
+	if (cur == NULL)
+	{
+		*head = new;
+		return ;
+	}
 	while (cur->next != NULL)
 		cur = cur->next;
 	cur->next = new;
@@ -123,24 +129,58 @@ void	ft_rev(struct s_node **head)
 	*head = prev;
 }
 
+bool	ft_search(struct s_node *head, void *data)
+{
+	struct s_node	*cur;
+
+	cur = head;
+	while (cur->next != NULL)
+	{
+		if (cur->data == data)
+			return (1);
+		cur = cur->next;
+	}
+	return (0);
+}
+
+bool	ft_search_rec(struct s_node *head, void *data)
+{
+	if (head == NULL)
+		return (0);
+	if (head->data == data)
+		return (1);
+	return (ft_search_rec(head->next, data));
+}
+
+int	ft_listlen(struct s_node *head)
+{
+	struct s_node	*cur;
+	int				count;
+
+	cur = head;
+	if (cur == NULL)
+		return (0);
+	count = 1;
+	while (cur->next != NULL)
+	{
+		count++;
+		cur = cur->next;
+	}
+	return (count);
+}
+
 int	main(void)
 {
 	struct s_node	*head;
+	int				a;
+	int				b;
 
 	head = NULL;
-	ft_push(&head, 2);
-	ft_push(&head, 4);
-	ft_push(&head, 6);
-	ft_append(&head, 10);
-	ft_push(&head, 8);
-	ft_insert_after_value(head, 4, 88);
-	ft_putnode(head);
-	head = ft_reverse(head);
-	printf("\nReversed:\n");
-	ft_putnode(head);
-	ft_rev(&head);
-	printf("\nReversed Again:\n");
-	ft_putnode(head);
+	a = 2;
+	b = 2;
+	ft_push(&head, &a);
+	ft_putnode_int(head);
+	printf("\n%d\n", ft_search(head, &b));
 	ft_freelist(head);
 	return (0);
 }
