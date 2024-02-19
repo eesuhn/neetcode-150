@@ -4,11 +4,11 @@
 
 struct s_node
 {
-	void			*data;
+	int				data;
 	struct s_node	*next;
 };
 
-void	ft_push(struct s_node **head, void *data)
+void	ft_push(struct s_node **head, int data)
 {
 	struct s_node	*new_node;
 
@@ -20,7 +20,7 @@ void	ft_push(struct s_node **head, void *data)
 	*head = new_node;
 }
 
-void	ft_insert_after(struct s_node *prev_node, void *data)
+void	ft_insert_after(struct s_node *prev_node, int data)
 {
 	struct s_node	*new_node;
 
@@ -32,7 +32,7 @@ void	ft_insert_after(struct s_node *prev_node, void *data)
 	prev_node->next = new_node;
 }
 
-void	ft_insert_after_value(struct s_node *head, void *target, void *data)
+void	ft_insert_after_value(struct s_node *head, int target, int data)
 {
 	struct s_node	*current;
 
@@ -45,14 +45,14 @@ void	ft_insert_after_value(struct s_node *head, void *target, void *data)
 	}
 }
 
-void	ft_putnode_int(struct s_node *head)
+void	ft_putnode(struct s_node *head)
 {
 	struct s_node	*current;
 
 	current = head;
 	while (current != NULL)
 	{
-		printf("%i\n", *(int *)current->data);
+		printf("%i\n", current->data);
 		current = current->next;
 	}
 }
@@ -91,7 +91,7 @@ struct s_node	*ft_reverse(struct s_node *head)
 	return (head);
 }
 
-void	ft_append(struct s_node **head, void *data)
+void	ft_append(struct s_node **head, int data)
 {
 	struct s_node	*new;
 	struct s_node	*cur;
@@ -129,7 +129,7 @@ void	ft_rev(struct s_node **head)
 	*head = prev;
 }
 
-bool	ft_search(struct s_node *head, void *data)
+bool	ft_search(struct s_node *head, int data)
 {
 	struct s_node	*cur;
 
@@ -143,7 +143,7 @@ bool	ft_search(struct s_node *head, void *data)
 	return (0);
 }
 
-bool	ft_search_rec(struct s_node *head, void *data)
+bool	ft_search_rec(struct s_node *head, int data)
 {
 	if (head == NULL)
 		return (0);
@@ -169,7 +169,7 @@ int	ft_listlen(struct s_node *head)
 	return (count);
 }
 
-void	ft_del_fval(struct s_node **head, void *data)
+void	ft_del_fval(struct s_node **head, int data)
 {
 	struct s_node	*cur;
 	struct s_node	*prev;
@@ -191,7 +191,7 @@ void	ft_del_fval(struct s_node **head, void *data)
 	}
 }
 
-void	ft_del_aval(struct s_node **head, void *data)
+void	ft_del_aval(struct s_node **head, int data)
 {
 	struct s_node	*cur;
 	struct s_node	*prev;
@@ -220,24 +220,16 @@ void	ft_del_aval(struct s_node **head, void *data)
 int	main(void)
 {
 	struct s_node	*head;
-	int				a;
-	int				b;
-	int				c;
-	int				d;
 
 	head = NULL;
-	a = 2;
-	b = 4;
-	c = 6;
-	d = 4;
-	ft_push(&head, &a);
-	ft_push(&head, &b);
-	ft_push(&head, &c);
-	ft_push(&head, &d);
-	ft_putnode_int(head);
-	ft_del_aval(&head, &b);
+	ft_push(&head, 2);
+	ft_push(&head, 4);
+	ft_push(&head, 6);
+	ft_push(&head, 4);
+	ft_putnode(head);
+	ft_del_aval(&head, 4);
 	printf("\n");
-	ft_putnode_int(head);
+	ft_putnode(head);
 	ft_freelist(head);
 	return (0);
 }
