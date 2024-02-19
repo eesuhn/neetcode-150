@@ -169,18 +169,75 @@ int	ft_listlen(struct s_node *head)
 	return (count);
 }
 
+void	ft_del_fval(struct s_node **head, void *data)
+{
+	struct s_node	*cur;
+	struct s_node	*prev;
+
+	cur = *head;
+	prev = NULL;
+	while (cur != NULL && cur->data != data)
+	{
+		prev = cur;
+		cur = cur->next;
+	}
+	if (cur != NULL)
+	{
+		if (prev == NULL)
+			*head = cur->next;
+		else
+			prev->next = cur->next;
+		free(cur);
+	}
+}
+
+void	ft_del_aval(struct s_node **head, void *data)
+{
+	struct s_node	*cur;
+	struct s_node	*prev;
+	struct s_node	*next;
+
+	cur = *head;
+	prev = NULL;
+	next = NULL;
+	while (cur != NULL)
+	{
+		next = cur->next;
+		if (cur->data == data)
+		{
+			if (prev == NULL)
+				*head = next;
+			else
+				prev->next = next;
+			free(cur);
+		}
+		else
+			prev = cur;
+		cur = next;
+	}
+}
+
 int	main(void)
 {
 	struct s_node	*head;
 	int				a;
 	int				b;
+	int				c;
+	int				d;
 
 	head = NULL;
 	a = 2;
-	b = 2;
+	b = 4;
+	c = 6;
+	d = 4;
 	ft_push(&head, &a);
+	ft_push(&head, &b);
+	ft_push(&head, &c);
+	ft_push(&head, &d);
 	ft_putnode_int(head);
-	printf("\n%d\n", ft_search(head, &b));
+	ft_del_aval(&head, &b);
+	printf("\n");
+	ft_putnode_int(head);
 	ft_freelist(head);
 	return (0);
 }
